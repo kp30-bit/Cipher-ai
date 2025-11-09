@@ -16,6 +16,10 @@ type Config struct {
 	MongoDBName string
 	Env         string // local or prod
 	Host        string
+	APIKey      string
+	BaseURL     string
+	DestDir     string
+	MaxWorkers  int
 }
 
 // LoadConfig loads environment-specific config safely
@@ -39,6 +43,10 @@ func LoadConfig() (*Config, error) {
 		Port:        viper.GetString("PORT"),
 		MongoURI:    viper.GetString("MONGO_URI"),
 		MongoDBName: viper.GetString("MONGO_DB"),
+		APIKey:      viper.GetString("API_KEY"),
+		BaseURL:     viper.GetString("BASE_URL"),
+		DestDir:     viper.GetString("DEST_DIR"),
+		MaxWorkers:  viper.GetInt("MAX_WORKERS"),
 	}
 
 	// Set hostname dynamically based on environment

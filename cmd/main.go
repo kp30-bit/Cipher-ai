@@ -56,8 +56,8 @@ func main() {
 func NewApp() *App {
 	cfg := GetConfig()
 
-	client, db := GetMongo()
-	usecase := usecase.NewUsecase(db, cfg)
+	client, db := GetMongo(cfg)
+	usecase := usecase.NewConcallFetcher(db, cfg)
 	router := gin.Default()
 
 	// Register routes
@@ -95,9 +95,9 @@ func GetConfig() *config.Config {
 }
 
 // GetMongo singleton
-func GetMongo() (*db.MongoClient, *db.MongoDB) {
+func GetMongo(cfg *config.Config) (*db.MongoClient, *db.MongoDB) {
 	mongoOnce.Do(func() {
-		cfg := GetConfig()
+
 		client, db, err := db.InitMongo(cfg.MongoURI, cfg.MongoDBName)
 		if err != nil {
 			log.Fatalf("❌ Failed to initialize MongoDB: %v", err)

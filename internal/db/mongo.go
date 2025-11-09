@@ -20,7 +20,7 @@ type MongoDB struct {
 
 // InitMongo initializes a MongoDB client and returns a client & database reference
 func InitMongo(uri, dbName string) (*MongoClient, *MongoDB, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	clientOpts := options.Client().ApplyURI(uri)
