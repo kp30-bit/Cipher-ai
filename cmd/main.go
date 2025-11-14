@@ -63,17 +63,6 @@ func NewApp() *App {
 	// Register routes
 	controller.RegisterRoutes(router, usecase)
 
-	// Serve static frontend assets (JS, CSS)
-	// router.Static("/static", "./frontend")
-
-	// // Serve main HTML file
-	// router.LoadHTMLFiles("frontend/index.html")
-
-	// Render frontend when visiting root
-	// router.GET("/", func(c *gin.Context) {
-	// 	c.HTML(http.StatusOK, "index.html", nil)
-	// })
-
 	return &App{
 		Router:      router,
 		Usecase:     usecase,
@@ -116,7 +105,7 @@ func gracefulShutdown(srv *http.Server, client *db.MongoClient) {
 
 	log.Println("🛑 Shutting down server gracefully...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3600*time.Second)
 	defer cancel()
 
 	// Shutdown HTTP server first
