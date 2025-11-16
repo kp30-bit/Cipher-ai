@@ -8,13 +8,13 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
-export const fetchConcalls = async (page = 1, limit = 10) => {
+export const fetchConcalls = async (page = 1, limit = 12) => {
   const url = `${API_BASE_URL}/list_concalls?page=${page}&limit=${limit}`;
   const response = await fetch(url);
   return handleResponse(response);
 };
 
-export const searchConcalls = async (name, page = 1, limit = 10) => {
+export const searchConcalls = async (name, page = 1, limit = 12) => {
   const encodedName = encodeURIComponent(name);
   const url = `${API_BASE_URL}/find_concalls?name=${encodedName}&page=${page}&limit=${limit}`;
   const response = await fetch(url);

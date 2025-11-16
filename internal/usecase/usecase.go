@@ -256,6 +256,7 @@ func processAnnouncementsSequentially(
 		log.Printf("🔹 [%d/%d] Processing: %s", i+1, len(announcements), a.ShortLongName)
 
 		summary, err := processAnnouncement(ctx, httpClient, genaiClient, model, a, destDir)
+
 		if err != nil {
 			log.Printf("❌ Error processing announcement %s (PDFFlag: %d, Attachment: %s): %v",
 				a.ShortLongName, a.PDFFlag, a.AttachmentName, err)
@@ -264,7 +265,7 @@ func processAnnouncementsSequentially(
 		}
 
 		// Only add to results if summary is valid (not nil)
-		if summary != nil && summary.Guidance != "NA" {
+		if summary != nil {
 			results = append(results, *summary)
 			log.Printf("✅ Processed successfully: %s", a.ShortLongName)
 		} else {
@@ -324,7 +325,6 @@ func processAnnouncement(ctx context.Context, client *HTTPClient, genaiClient *g
 	if err != nil {
 		return nil, fmt.Errorf("summarization error for %s: %w", saveAs, err)
 	}
-
 	log.Printf("✅ Summary generated for %s:", saveAs)
 
 	// Create and return ConcallSummary struct
@@ -621,7 +621,7 @@ func (cf *concallFetcher) ListConcallHandler(c *gin.Context) {
 	defer cancel()
 
 	pageStr := c.DefaultQuery("page", "1")
-	limitStr := c.DefaultQuery("limit", "10")
+	limitStr := c.DefaultQuery("limit", "12")
 
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page <= 0 {
@@ -629,13 +629,18 @@ func (cf *concallFetcher) ListConcallHandler(c *gin.Context) {
 	}
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil || limit <= 0 {
-		limit = 10
+		limit = 12
 	}
 
 	skip := int64((page - 1) * limit)
 	limit64 := int64(limit)
 
 	coll := cf.db.Collection("guidances")
+
+	// Filter to exclude documents where guidance is "NA"
+	filter := bson.M{
+		"guidance": bson.M{"$ne": "NA"},
+	}
 
 	// We only need name, date, guidance
 	projection := bson.M{
@@ -651,7 +656,7 @@ func (cf *concallFetcher) ListConcallHandler(c *gin.Context) {
 		SetSkip(skip).
 		SetLimit(limit64)
 
-	cursor, err := coll.Find(ctx, bson.M{}, findOpts)
+	cursor, err := coll.Find(ctx, filter, findOpts)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Failed to query MongoDB",
@@ -671,7 +676,7 @@ func (cf *concallFetcher) ListConcallHandler(c *gin.Context) {
 	}
 
 	// Get total count for pagination
-	totalCount, err := coll.CountDocuments(ctx, bson.M{})
+	totalCount, err := coll.CountDocuments(ctx, filter)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Failed to count documents",
@@ -705,14 +710,14 @@ func (cf *concallFetcher) FindConcallHandler(c *gin.Context) {
 
 	// Pagination params (optional)
 	pageStr := c.DefaultQuery("page", "1")
-	limitStr := c.DefaultQuery("limit", "10")
+	limitStr := c.DefaultQuery("limit", "12")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page <= 0 {
 		page = 1
 	}
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil || limit <= 0 {
-		limit = 10
+		limit = 12
 	}
 	skip := int64((page - 1) * limit)
 	limit64 := int64(limit)
