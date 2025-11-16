@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -68,6 +69,11 @@ func (cf *concallFetcher) ListConcallHandler(c *gin.Context) {
 
 	totalPages := (totalCount + int64(limit) - 1) / int64(limit)
 
+	// Remove "-$" suffix from names if present
+	for i := range results {
+		results[i].Name = strings.TrimSuffix(results[i].Name, "-$")
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"meta": gin.H{
 			"page":       page,
@@ -78,4 +84,3 @@ func (cf *concallFetcher) ListConcallHandler(c *gin.Context) {
 		"data": results,
 	})
 }
-

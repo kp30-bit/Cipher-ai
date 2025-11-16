@@ -142,7 +142,7 @@ func (cf *concallFetcher) FetchConcallDataHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message":   "Announcements processed and saved successfully",
-		"count":    len(summaries),
+		"count":     len(summaries),
 		"summaries": summaries,
 	})
 }
@@ -198,6 +198,11 @@ func (cf *concallFetcher) processAnnouncementsSequentially(
 		}
 
 		if summary != nil {
+			// Remove "-$" suffix from name if present
+			if strings.HasSuffix(summary.Name, "-$") {
+				summary.Name = strings.TrimSuffix(summary.Name, "-$")
+			}
+
 			results = append(results, *summary)
 			log.Printf("✅ Processed successfully: %s", a.ShortLongName)
 		} else {
@@ -289,4 +294,3 @@ func parseHumanReadableDate(dateStr string) (time.Time, error) {
 
 	return time.Time{}, fmt.Errorf("unable to parse date '%s'. Supported formats: YYYY-MM-DD, DD-MM-YYYY, MM/DD/YYYY, DD/MM/YYYY, YYYYMMDD", dateStr)
 }
-
