@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import ConcallList from './components/ConcallList';
 import SearchBar from './components/SearchBar';
+import Analytics from './components/Analytics';
 import { fetchConcalls, searchConcalls } from './services/api';
 
 function App() {
@@ -123,6 +124,8 @@ function App() {
             </div>
           </div>
         )}
+
+        <Analytics />
       </div>
     </div>
   );

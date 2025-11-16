@@ -9,4 +9,5 @@ type Usecase interface {
 	ListConcallHandler(c *gin.Context)
 	FindConcallHandler(c *gin.Context)
 	CleanupConcallHandler(c *gin.Context)
+	GetAnalyticsHandler(c *gin.Context)
 }

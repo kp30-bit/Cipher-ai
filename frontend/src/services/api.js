@@ -21,3 +21,9 @@ export const searchConcalls = async (name, page = 1, limit = 12) => {
   return handleResponse(response);
 };
 
+export const getAnalytics = async () => {
+  const url = `${API_BASE_URL}/analytics`;
+  const response = await fetch(url);
+  return handleResponse(response);
+};
+
