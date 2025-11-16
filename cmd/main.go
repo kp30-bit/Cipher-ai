@@ -5,6 +5,8 @@ import (
 	"concall-analyser/internal/controller"
 	"concall-analyser/internal/db"
 	"concall-analyser/internal/interfaces"
+	"concall-analyser/internal/repository/mongo"
+	"concall-analyser/internal/service/analytics"
 	"concall-analyser/internal/usecase"
 	"context"
 	"log"
@@ -58,14 +60,22 @@ func NewApp() *App {
 	cfg := GetConfig()
 
 	client, db := GetMongo(cfg)
-	usecase := usecase.NewConcallFetcher(db, cfg)
+
+	// Initialize analytics service (shared between usecase and middleware)
+	analyticsRepo := mongo.NewAnalyticsRepository(db)
+	analyticsService := analytics.NewAnalyticsService(analyticsRepo)
+
+	usecaseInstance, err := usecase.NewConcallFetcher(db, cfg, analyticsService)
+	if err != nil {
+		log.Fatalf("❌ Failed to create usecase: %v", err)
+	}
 	router := gin.Default()
 
 	// Enable CORS for API routes
 	router.Use(corsMiddleware())
 
 	// Register API routes (prefixed with /api)
-	controller.RegisterRoutes(router, usecase)
+	controller.RegisterRoutes(router, usecaseInstance, analyticsService)
 
 	// Serve static frontend assets (JS, CSS, images, etc.)
 	router.Static("/static", "./frontend/build/static")
@@ -87,7 +97,7 @@ func NewApp() *App {
 
 	return &App{
 		Router:      router,
-		Usecase:     usecase,
+		Usecase:     usecaseInstance,
 		MongoClient: client,
 		Config:      cfg,
 	}
