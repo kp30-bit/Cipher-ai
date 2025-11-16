@@ -74,6 +74,7 @@ function App() {
 
   return (
     <div className="App">
+      <Analytics />
       <div className="container">
         <header className="header">
           <h1 className="title">Cipher</h1>
@@ -124,8 +125,6 @@ function App() {
             </div>
           </div>
         )}
-
-        <Analytics />
       </div>
     </div>
   );

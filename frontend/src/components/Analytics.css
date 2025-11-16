@@ -1,116 +1,126 @@
 .analytics-container {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  animation: fadeInUp 0.7s ease-out;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  animation: fadeInUp 0.7s ease-out 0.3s both;
 }
 
 .analytics-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  max-width: 300px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0;
 }
 
 .analytics-card {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
-  padding: 14px 18px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 10px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .analytics-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  opacity: 0.8;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s;
+}
+
+.analytics-card:hover::before {
+  left: 100%;
 }
 
 .analytics-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.3);
-  border-color: rgba(165, 180, 252, 0.3);
-  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4), 0 0 0 1px rgba(165, 180, 252, 0.3);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .analytics-card-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 6px;
 }
 
 .analytics-card-icon {
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1;
-  opacity: 0.9;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 4px rgba(165, 180, 252, 0.5));
 }
 
 .analytics-card-label {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.75);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  flex: 1;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .analytics-card-value {
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
-  line-height: 1.2;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.98);
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .analytics-loading {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 10px 20px;
   color: white;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .analytics-loading .spinner {
-  width: 32px;
-  height: 32px;
-  border: 2px solid rgba(165, 180, 252, 0.2);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(165, 180, 252, 0.3);
   border-top-color: #a5b4fc;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin-right: 8px;
 }
 
 .analytics-loading p {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   opacity: 0.8;
+  margin: 0;
 }
 
 .analytics-error {
-  text-align: center;
-  padding: 16px;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
   background: rgba(239, 68, 68, 0.15);
-  border-radius: 12px;
+  border-radius: 50px;
   color: rgba(255, 238, 238, 0.95);
   font-weight: 500;
   backdrop-filter: blur(20px);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  font-size: 0.85rem;
+  font-size: 0.7rem;
 }
 
 @keyframes fadeInUp {
@@ -141,45 +151,43 @@
 
 @media (max-width: 768px) {
   .analytics-container {
-    margin-top: 2rem;
-    padding-top: 1.25rem;
-  }
-  
-  .analytics-grid {
-    max-width: 100%;
-    gap: 10px;
+    top: 15px;
+    right: 15px;
   }
   
   .analytics-card {
-    padding: 12px 14px;
+    padding: 8px 16px;
   }
   
   .analytics-card-value {
-    font-size: 1.4rem;
+    font-size: 1rem;
   }
   
   .analytics-card-icon {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   
   .analytics-card-label {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
-  .analytics-grid {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    gap: 10px;
+  .analytics-container {
+    top: 10px;
+    right: 10px;
   }
   
   .analytics-card {
-    padding: 14px;
+    padding: 8px 14px;
   }
   
   .analytics-card-value {
-    font-size: 1.3rem;
+    font-size: 0.95rem;
+  }
+  
+  .analytics-card-label {
+    font-size: 0.6rem;
   }
 }
 
