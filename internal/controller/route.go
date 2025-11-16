@@ -13,5 +13,6 @@ func RegisterRoutes(r *gin.Engine, u interfaces.Usecase) {
 		api.GET("/fetch_concalls", u.FetchConcallDataHandler)
 		api.GET("/list_concalls", u.ListConcallHandler)
 		api.GET("/find_concalls", u.FindConcallHandler)
+		api.DELETE("/cleanup_concalls", u.CleanupConcallHandler)
 	}
 }
