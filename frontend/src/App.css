@@ -208,3 +208,28 @@
   }
 }
 
+
+.analytics {
+  /* desktop: untouched */
+}
+
+@media (max-width: 768px) {
+  .analytics {
+    position: static;          /* 🔥 bring back into normal flow */
+    margin: 16px auto 20px;    /* center horizontally */
+    display: flex;
+    justify-content: center;
+  }
+
+  .analytics > * {
+    width: fit-content;
+    max-width: 90%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 16px;   /* was 50px */
+  }
+}

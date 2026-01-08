@@ -74,13 +74,15 @@ function App() {
 
   return (
     <div className="App">
-      <Analytics />
       <div className="container">
         <header className="header">
           <h1 className="title">Cipher</h1>
           <p className="subtitle">Real-time guidance derived from every concall</p>
+          
         </header>
-
+        <div className="analytics">
+          <Analytics />
+        </div>
         <SearchBar 
           onSearch={handleSearch}
           onClear={handleClearSearch}

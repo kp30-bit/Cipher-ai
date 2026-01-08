@@ -151,8 +151,14 @@
 
 @media (max-width: 768px) {
   .analytics-container {
-    top: 15px;
-    right: 15px;
+    position: static !important;   /* 🔥 stop floating */
+    margin: 6px auto 12px;        /* center horizontally */
+    display: flex;
+    justify-content: center;
+  }
+
+  .analytics-grid {
+    justify-content: center;
   }
   
   .analytics-card {
